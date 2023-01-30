@@ -1,10 +1,6 @@
-/// creating a http server in nodejs
-// import
 const http = require('http');
-
-const server = http.createServer((req, res) => {
-    console.log(req);
-    
-});
+const routes = require('./routes');
+// console.log(routes.myName);
+const server = http.createServer(routes);
 
 server.listen(3000);
