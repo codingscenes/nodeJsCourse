@@ -1,26 +1,20 @@
 const http = require('http');
 
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-// adding middleware
-app.use('/', (req, res, next) => {
-  console.log('Middleware always running!');
-  // sending response from here
-  res.send('<h2>hello</h2>');
-});
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-app.use('/add-users', (req, res, next) => {
-  console.log('In the middlware-add-users');
-  // sending response from here
-  res.send('<h1>These are the users!</h1>');
-});
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/', (req, res, next) => {
-  console.log('In the middlware-root');
-  // sending response from here
-  res.send('<h1>Hello from Express JS!</h1>');
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+app.use((req, res, next) => {
+  res.status(404).send('<h1>Page not found!</h1>');
 });
 
 app.listen(3000);
