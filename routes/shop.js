@@ -11,7 +11,7 @@ const router = express.Router();
 // Path + method
 router.get('/', (req, res, next) => {
   console.log(adminData.products);
-  res.render('shop');
+  res.render('shop', { prods: adminData.products, docTitle: 'Shop' });
 });
 
 module.exports = router;
