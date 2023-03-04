@@ -10,7 +10,7 @@ const products = [];
 
 // GET - /add-product
 router.get('/add-product', (req, res, next) => {
-  res.sendFile(viewPath('add-product.html'));
+  res.render('add-product', { pageTitle: 'Add Product' });
 });
 
 // POST - /add-product
