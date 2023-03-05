@@ -59,8 +59,8 @@ main {
 
 button {
   font: inherit;
-  border: 1px solid #a10073;
-  color: #930169;
+  border: 1px solid #121212;
+  color: #000000;
   background: white;
   border-radius: 3px;
   cursor: pointer;
@@ -68,7 +68,7 @@ button {
 
 button:hover,
 button:active {
-  background-color: #d20397;
+  background-color: #272727;
   color: white;
 }
 
