@@ -11,7 +11,11 @@ const router = express.Router();
 // Path + method
 router.get('/', (req, res, next) => {
   console.log(adminData.products);
-  res.render('shop', { prods: adminData.products, docTitle: 'Shop' });
+  res.render('shop', {
+    prods: adminData.products,
+    pageTitle: 'Shop',
+    path: '/',
+  });
 });
 
 module.exports = router;
