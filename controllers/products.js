@@ -19,14 +19,15 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  const products = Product.fetchAll(); // [{title: value},,,,]
-  res.render('shop', {
-    prods: products,
-    pageTitle: 'Shop',
-    path: '/',
-    hasProducts: products.length > 0,
-    formCSS: true,
-    productCSS: true,
-    activeShop: true,
-  });
+  Product.fetchAll((products) => {
+    res.render('shop', {
+      prods: products,
+      pageTitle: 'Shop',
+      path: '/',
+      hasProducts: products.length > 0,
+      formCSS: true,
+      productCSS: true,
+      activeShop: true,
+    });
+  }); // [{title: value},,,,]
 };

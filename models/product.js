@@ -28,7 +28,18 @@ module.exports = class Product {
     });
   }
 
-  static fetchAll() {
-    return [];
+  static fetchAll(callbackFn) {
+    const pathBuilt = path.join(
+      path.dirname(require.main.filename),
+      'data',
+      'products.json'
+    );
+
+    fs.readFile(pathBuilt, (err, fileContent) => {
+      if (err) {
+        callbackFn([]);
+      }
+      callbackFn(JSON.parse(fileContent));
+    });
   }
 };

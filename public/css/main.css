@@ -77,6 +77,8 @@ button:active {
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: stretch;
+  flex-direction: column;
+  align-content: center;
 }
 
 .card {
