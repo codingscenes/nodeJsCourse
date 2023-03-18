@@ -9,23 +9,27 @@
       <div class="grid">
         <% for(let product of prods) { %>
         <article class="card product-item">
-          <header class="card-header">
-            <h1 class="product-title"><%= product.title %></h1>
-          </header>
           <div class="card-image">
             <img
-              src="https://kaboompics.com/cache/2/b/6/d/c/2b6dcd9aa2dc7ed5f1dd879d25aaee3c3a981c10.jpeg"
+              src="<%= product.imageUrl %>"
               alt="Laptop"
             />
           </div>
+          <header class="card-header">
+            <h1 class="product-title"><%= product.title %></h1>
+          </header>
+
           <div class="card-content">
-            <h2 class="product-price">$2.50</h2>
+            <h2 class="product-price">$<%= product.price %></h2>
             <p class="product-description">
-              This product is cool and has lots of characteristic. Easy to use.
+              <%= product.description %>
             </p>
           </div>
           <div class="card-actions">
-            <button class="btn">Add to Cart</button>
+            <form action="/add-to-cart" method="POST">
+              <button class="btn">Add to Cart</button>
+            </form>
+
           </div>
         </article>
         <% } %>

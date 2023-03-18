@@ -4,7 +4,40 @@
 <%- include('../includes/navigation.ejs') %>
 
     <main>
+      <% if (prods.length > 0) { %>
 
+      <div class="grid">
+        <% for(let product of prods) { %>
+        <article class="card product-item">
+          <div class="card-image">
+            <img
+              src="<%= product.imageUrl %>"
+              alt="Laptop"
+            />
+          </div>
+          <header class="card-header">
+            <h1 class="product-title"><%= product.title %></h1>
+          </header>
+
+          <div class="card-content">
+            <h2 class="product-price">$<%= product.price %></h2>
+            <p class="product-description">
+              <%= product.description %>
+            </p>
+          </div>
+          <div class="card-actions">
+            <button class="btn" type="button" onclick="window.location.href='/admin/edit-product'">EDIT</button>
+            <form action="/admin/remove-product" method="POST">
+              <button class="btn" type="submit">Remove</button>
+            </form>
+
+          </div>
+        </article>
+        <% } %>
+      </div>
+      <% } else { %>
+        <h2>Product not found!</h2>
+      <% } %>
     </main>
   <%- include('../includes/end.ejs') %>
 

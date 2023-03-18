@@ -12,7 +12,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getShopIndex = (req, res, next) => {
   Product.fetchAll((products) => {
-    res.render('shop/product-list', {
+    res.render('shop/index', {
       prods: products,
       pageTitle: 'My Shop',
       path: '/',
