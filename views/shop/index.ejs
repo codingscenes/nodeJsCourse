@@ -1,8 +1,8 @@
-<%- include('includes/head.ejs') %>
+<%- include('../includes/head.ejs') %>
     <link rel="stylesheet" href="/css/product.css" />
   </head>
   <body>
-<%- include('includes/navigation.ejs') %>
+<%- include('../includes/navigation.ejs') %>
 
     <main>
       <% if (prods.length > 0) { %>
@@ -20,10 +20,9 @@
             />
           </div>
           <div class="card-content">
-            <h2 class="product-price">$19.99</h2>
+            <h2 class="product-price">$2.50</h2>
             <p class="product-description">
-              A very interesting book about so many even more interesting
-              things!
+              This product is cool and has lots of characteristic. Easy to use.
             </p>
           </div>
           <div class="card-actions">
@@ -36,5 +35,5 @@
         <h2>Product not found!</h2>
       <% } %>
     </main>
-  <%- include('includes/end.ejs') %>
+  <%- include('../includes/end.ejs') %>
 
