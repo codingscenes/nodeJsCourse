@@ -185,3 +185,7 @@ button:active {
   background-color: #272727;
   color: white;
 }
+
+.align-center {
+  text-align: -webkit-center;
+}
