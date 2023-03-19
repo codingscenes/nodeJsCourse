@@ -4,9 +4,7 @@ exports.getAddProduct = (req, res, next) => {
   res.render('admin/add-product', {
     pageTitle: 'Add Product',
     path: '/add-product',
-    formCSS: true,
-    productCSS: true,
-    activeAddProduct: true,
+    isEdit: '',
   });
 };
 
@@ -29,4 +27,20 @@ exports.postAddProduct = (req, res, next) => {
   const product = new Product(title, description, price, imageUrl);
   product.save();
   res.redirect('/');
+};
+
+exports.getEditMyProduct = (req, res, next) => {
+  const isEditMode = req.query.isEditing;
+  const productId = req.params.productId;
+  console.log('isEditMode', isEditMode); //"true"
+
+  Product.findProductById(productId, (product) => {
+    // check if product is not undefined or return user
+    res.render('admin/edit-product', {
+      pageTitle: 'Editing Product',
+      path: '',
+      product: product,
+      isEdit: isEditMode,
+    });
+  });
 };

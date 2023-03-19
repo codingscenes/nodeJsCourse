@@ -45,7 +45,6 @@ exports.getProductDetails = (req, res, next) => {
   const productId = req.params.productId;
   // filter the data using the product id and send that product to view
   Product.findProductById(productId, (product) => {
-    console.log('Product is ', product);
     res.render('shop/product-details', {
       pageTitle: 'My Product Details',
       path: '/product-details',
