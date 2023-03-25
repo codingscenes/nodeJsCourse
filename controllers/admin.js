@@ -24,7 +24,7 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const imageUrl = req.body.imageUrl;
 
-  const product = new Product(title, description, price, imageUrl);
+  const product = new Product(null, title, description, price, imageUrl);
   product.save();
   res.redirect('/');
 };
@@ -32,10 +32,8 @@ exports.postAddProduct = (req, res, next) => {
 exports.getEditMyProduct = (req, res, next) => {
   const isEditMode = req.query.isEditing;
   const productId = req.params.productId;
-  console.log('isEditMode', isEditMode); //"true"
 
   Product.findProductById(productId, (product) => {
-    // check if product is not undefined or return user
     res.render('admin/edit-product', {
       pageTitle: 'Editing Product',
       path: '',
@@ -43,4 +41,22 @@ exports.getEditMyProduct = (req, res, next) => {
       isEdit: isEditMode,
     });
   });
+};
+
+exports.saveModifedProduct = (req, res, next) => {
+  const reqBody = req.body;
+  const productId = reqBody.productId;
+  const modifiedTitle = reqBody.title;
+  const modifiedPrice = reqBody.price;
+  const modifiedImgUrl = reqBody.imageUrl;
+  const modifedDesc = reqBody.description;
+  const modifiedProduct = new Product(
+    productId,
+    modifiedTitle,
+    modifedDesc,
+    modifiedPrice,
+    modifiedImgUrl
+  );
+  modifiedProduct.saveModifiedFile();
+  res.redirect('/admin/admin-product');
 };
