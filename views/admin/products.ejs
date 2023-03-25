@@ -31,6 +31,7 @@
              Edit
             </a>
             <form action="/admin/remove-product" method="POST">
+              <input type="hidden" value="<%= product.productId %>" name="productId" />
               <button class="btn" type="submit">Remove</button>
             </form>
           </div>
