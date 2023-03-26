@@ -1,38 +1,20 @@
-<header class="main-header">
-  <nav class="main-header-nav">
-    <ul class="main-header-item-list">
-      <li class="main-header-item">
-        <a class="<%= path === '/' ? 'active' : '' %>" href="/">My Shop</a>
-      </li>
-      <li class="main-header-item">
-        <a class="<%= path === '/products' ? 'active' : '' %>" href="/products"
-          >My Products</a
-        >
-      </li>
-      <li class="main-header-item">
-        <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders"
-          >My Orders</a
-        >
-      </li>
-      <li class="main-header-item">
-        <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart"
-          >My Cart</a
-        >
-      </li>
-      <li class="main-header-item">
-        <a
-          class="<%= path === '/add-product' ? 'active' : '' %>"
-          href="/admin/add-product"
-          >Add Product</a
-        >
-      </li>
-      <li class="main-header-item">
-        <a
-          class="<%= path === '/admin-product' ? 'active' : '' %>"
-          href="/admin/admin-product"
-          >Admin Product</a
-        >
-      </li>
-    </ul>
-  </nav>
-</header>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Notebook</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="<%= path === '/' ? 'active' : '' %>">
+          <a href="/">Notes</a>
+        </li>
+        <li class="<%= path === '/add-note' ? 'active' : '' %>">
+          <a href="/add-note">Add Notes</a>
+        </li>
+        <li class="<%= path === '/manage-notes' ? 'active' : '' %>">
+          <a href="/admin/manage-notes">Manage Notes</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,46 @@
+<%- include('../includes/top.ejs') %>
+<!-- navigation  -->
+<%- include('../includes/navigation.ejs')%>
+<!-- body  -->
+<main>
+  <div class="container">
+    <div class="add-notes">
+      <form action="<%= isEdit ? '/edit-note' : '/add-note' %>" method="POST">
+        <div class="form-group">
+          <label for="Title">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            value="<%= isEdit ? note.title : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="Description">Description</label>
+          <textarea class="form-control" name="description" rows="5">
+<%= isEdit ? note.description : '' %>
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="Image url">Image Url</label>
+          <input
+            type="text"
+            class="form-control"
+            name="imageUrl"
+            value="<%= isEdit ? note.imageUrl : '' %>"
+          />
+        </div>
+        <% if (isEdit) { %>
+        <input type="hidden" value="<%= note.noteId %>" name="noteId" />
+        <% } %>
+
+        <button class="btn btn-success" type="submit">
+          <%= isEdit ? 'Save' : 'Add' %>
+        </button>
+        <a href="/" class="btn btn-danger" role="button">Cancel</a>
+      </form>
+    </div>
+  </div>
+</main>
+
+<%- include('../includes/bottom.ejs') %>

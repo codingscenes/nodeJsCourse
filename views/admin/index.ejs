@@ -1,0 +1,33 @@
+<%- include('../includes/top.ejs') %>
+<!-- navigation  -->
+<%- include('../includes/navigation.ejs')%>
+<!-- body  -->
+<main>
+  <div class="container">
+    <% if (notes.length > 0) { %>
+    <h1>List of notes!</h1>
+    <% for(let note of notes){ %>
+    <div class="media">
+      <div class="media-left">
+        <img class="media-object" src="<%= note.imageUrl %>" alt="..." />
+      </div>
+      <div class="media-body">
+        <h1 class="media-heading"><%= note.title %></h1>
+        <p><%= note.description %></p>
+        <div class="actions">
+          <form action="/admin/approve" method="POST">
+            <input type="hidden" value="<%= note.noteId%>" name="noteId" />
+            <button class="btn">
+              <%= note.status === 'approved' ? 'Unapprove' : 'Approve' %>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% } %> <% } else { %>
+    <h1>No data available!</h1>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../includes/bottom.ejs') %>
