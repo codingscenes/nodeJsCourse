@@ -1,0 +1,55 @@
+main {
+  margin-top: 80px;
+}
+
+body {
+  background: #f8f7f7;
+}
+
+.btn {
+  background-color: #262525 !important;
+  border-color: #262525 !important;
+  color: #fff;
+  padding: 6px 18px;
+}
+.btn:hover,
+.btn:focus {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  color: #000000;
+  padding: 6px 18px;
+}
+.media {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+}
+.media:hover {
+  background: #e7f2f2;
+}
+.media-left {
+  width: 30%;
+}
+.media-object {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  border-radius: 10px;
+}
+
+.media-heading {
+  font-weight: 700;
+}
+.media-body p {
+  font-size: 20px;
+}
+.actions form {
+  display: inline-block;
+}
+
+.form-control {
+  color: #000 !important;
+}

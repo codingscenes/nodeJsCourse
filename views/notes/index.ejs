@@ -1,0 +1,32 @@
+<%- include('../includes/top.ejs') %>
+<!-- navigation below  -->
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+  <div class="container">
+    <h1>List of notes!</h1>
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <img
+            class="media-object"
+            src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80"
+            alt="..."
+          />
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">Media heading</h4>
+        <p>Hello this is a text description</p>
+        <div class="actions">
+          <a href="" role="button" class="btn"> View</a>
+          <a href="" role="button" class="btn"> Edit</a>
+          <form action="" method="POST">
+            <button class="btn">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<%- include('../includes/bottom.ejs') %>
