@@ -53,3 +53,7 @@ body {
 .form-control {
   color: #000 !important;
 }
+
+.float-right {
+  float: right;
+}

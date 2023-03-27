@@ -4,29 +4,39 @@
 
 <main>
   <div class="container">
+    <% if (notes.length > 0) { %>
     <h1>List of notes!</h1>
+    <% for (let note of notes) { %>
     <div class="media">
       <div class="media-left">
-        <a href="#">
-          <img
-            class="media-object"
-            src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80"
-            alt="..."
-          />
-        </a>
+        <img
+          class="media-object"
+          src="<%= note.imageUrl %>"
+          alt="<%= note.title %>"
+        />
       </div>
       <div class="media-body">
-        <h4 class="media-heading">Media heading</h4>
-        <p>Hello this is a text description</p>
+        <h1 class="media-heading"><%= note.title %></h1>
+        <p><%= note.description %></p>
         <div class="actions">
-          <a href="" role="button" class="btn"> View</a>
-          <a href="" role="button" class="btn"> Edit</a>
-          <form action="" method="POST">
+          <a href="/note/<%= note.noteId %>" role="button" class="btn"> View</a>
+          <a
+            href="/add-note/<%= note.noteId %>?isEditing=true"
+            role="button"
+            class="btn"
+          >
+            Edit</a
+          >
+          <form action="/delete-note" method="POST">
+            <input type="hidden" name="noteId" value="<%= note.noteId %>" />
             <button class="btn">Delete</button>
           </form>
         </div>
       </div>
     </div>
+    <% } %> <% } else { %>
+    <h1>No data available!</h1>
+    <% } %>
   </div>
 </main>
 <%- include('../includes/bottom.ejs') %>
