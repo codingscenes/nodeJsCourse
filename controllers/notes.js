@@ -1,13 +1,18 @@
 const Notes = require('../models/notes');
 
 exports.getIndex = (req, res, next) => {
-  Notes.fetchAll((_notes) => {
-    res.render('notes/index', {
-      pageTitle: 'Notes',
-      path: '/',
-      notes: _notes,
+  Notes.findAll({ raw: true })
+    .then((result) => {
+      console.log(result);
+      res.render('notes/index', {
+        pageTitle: 'Notes',
+        path: '/',
+        notes: result,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  }, false);
 };
 
 exports.getAddNote = (req, res, next) => {
@@ -21,8 +26,18 @@ exports.getAddNote = (req, res, next) => {
 exports.postNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl } = reqBody;
-  const note = new Notes(null, title, description, imageUrl);
-  note.save();
+  Notes.create({
+    title: title,
+    description: description,
+    imageUrl: imageUrl,
+    status: 'Unapproved',
+  })
+    .then((result) => {
+      console.log('Record Inserted');
+    })
+    .catch((err) => {
+      console.log('Failed: Record Inserted');
+    });
   res.redirect('/');
 };
 
