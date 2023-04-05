@@ -43,13 +43,34 @@ exports.postNote = (req, res, next) => {
 
 exports.getNoteDetails = (req, res, next) => {
   const noteId = req.params.noteId;
-  Notes.findNoteById(noteId, (_note) => {
-    res.render('notes/note', {
-      pageTitle: 'View Note Details',
-      path: '',
-      note: _note,
+  Notes.findOne({
+    where: {
+      id: noteId,
+    },
+    raw: true,
+  })
+    .then((result) => {
+      res.render('notes/note', {
+        pageTitle: 'View Note Details',
+        path: '',
+        note: result,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
+  // find only using Primary key
+  // Notes.findByPk(noteId, { raw: true })
+  //   .then((result) => {
+  //     res.render('notes/note', {
+  //       pageTitle: 'View Note Details',
+  //       path: '',
+  //       note: result,
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 };
 
 exports.getEditNoteDetails = (req, res, next) => {
