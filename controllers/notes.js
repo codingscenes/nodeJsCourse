@@ -34,11 +34,11 @@ exports.postNote = (req, res, next) => {
   })
     .then((result) => {
       console.log('Record Inserted');
+      res.redirect('/');
     })
     .catch((err) => {
       console.log('Failed: Record Inserted');
     });
-  res.redirect('/');
 };
 
 exports.getNoteDetails = (req, res, next) => {
@@ -120,6 +120,15 @@ exports.saveEditNote = (req, res, next) => {
 
 exports.deleteNote = (req, res, next) => {
   const noteId = req.body.noteId;
-  Notes.delete(noteId);
-  res.redirect('/');
+  Notes.destroy({
+    where: {
+      id: noteId,
+    },
+  })
+    .then((result) => {
+      res.redirect('/');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
