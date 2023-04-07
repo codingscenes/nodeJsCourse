@@ -8,7 +8,7 @@ exports.getIndex = (req, res, next) => {
     raw: true,
   })
     .then((result) => {
-      console.log(result);
+      // console.log(result);
       res.render('notes/index', {
         pageTitle: 'Notes',
         path: '/',

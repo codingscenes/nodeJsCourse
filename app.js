@@ -10,6 +10,7 @@ const app = express();
 const notesRoutes = require('./routes/notes');
 const adminRoutes = require('./routes/admin');
 const Notes = require('./models/notes');
+const Users = require('./models/users');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -27,8 +28,10 @@ app.use('/', (req, res, next) => {
   });
 });
 
+// recommended use sequelize migration (production env)
+// data base migration
 sequelize
-  .sync()
+  .sync({ force: true })
   .then((result) => {
     console.log('Sync Success!');
   })

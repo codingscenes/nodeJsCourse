@@ -40,7 +40,7 @@ exports.approveNote = (req, res, next) => {
       );
     })
     .then((result) => {
-      console.log('UPDATED: ', result);
+      // console.log('UPDATED: ', result);
       res.redirect('/admin/manage-notes');
     })
     .catch((err) => {
