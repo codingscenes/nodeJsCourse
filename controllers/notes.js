@@ -1,7 +1,12 @@
 const Notes = require('../models/notes');
 
 exports.getIndex = (req, res, next) => {
-  Notes.findAll({ raw: true })
+  Notes.findAll({
+    where: {
+      status: 'Approved',
+    },
+    raw: true,
+  })
     .then((result) => {
       console.log(result);
       res.render('notes/index', {

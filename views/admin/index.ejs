@@ -20,9 +20,9 @@
         <p><%= note.description %></p>
         <div class="actions">
           <form action="/admin/approve" method="POST">
-            <input type="hidden" value="<%= note.noteId %>" name="noteId" />
+            <input type="hidden" value="<%= note.id %>" name="noteId" />
             <button class="btn">
-              <%= note.status === 'approved' ? 'Unapprove' : 'Approve' %>
+              <%= note.status === 'Approved' ? 'Unapprove' : 'Approve' %>
             </button>
           </form>
         </div>

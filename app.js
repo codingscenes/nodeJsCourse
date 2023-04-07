@@ -30,7 +30,7 @@ app.use('/', (req, res, next) => {
 sequelize
   .sync()
   .then((result) => {
-    // console.log(result);
+    console.log('Sync Success!');
   })
   .catch((err) => console.log(err));
 
