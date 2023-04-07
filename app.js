@@ -28,6 +28,14 @@ app.use('/', (req, res, next) => {
   });
 });
 
+// magic association method
+Users.hasMany(Notes);
+
+Notes.belongsTo(Users, {
+  constraints: true,
+  onDelete: 'CASCADE',
+});
+
 // recommended use sequelize migration (production env)
 // data base migration
 sequelize
