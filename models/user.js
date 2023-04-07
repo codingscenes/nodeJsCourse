@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
+
 const sequelize = require('../connection/database');
 
-const Notes = sequelize.define('notes', {
+const User = sequelize.define('user', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -9,22 +10,19 @@ const Notes = sequelize.define('notes', {
     primaryKey: true,
     unique: true,
   },
-  title: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  description: {
+  email: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
-  imageUrl: {
-    type: DataTypes.STRING,
-    allowNull: null,
-  },
-  status: {
+  password: {
     type: DataTypes.STRING,
     allowNull: false,
   },
 });
 
-module.exports = Notes;
+module.exports = User;

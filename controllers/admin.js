@@ -1,7 +1,7 @@
-const Notes = require('../models/notes');
+const Note = require('../models/note');
 
 exports.getManageNotes = (req, res, next) => {
-  Notes.findAll({ raw: true })
+  Note.findAll({ raw: true })
     .then((result) => {
       res.render('admin/index', {
         pageTitle: 'Manage notes',
@@ -16,7 +16,7 @@ exports.getManageNotes = (req, res, next) => {
 
 exports.approveNote = (req, res, next) => {
   const noteId = req.body.noteId;
-  Notes.findOne({
+  Note.findOne({
     where: {
       id: noteId,
     },
@@ -28,7 +28,7 @@ exports.approveNote = (req, res, next) => {
       if (currentStatus === 'Unapproved') {
         newStatus = 'Approved';
       }
-      return Notes.update(
+      return Note.update(
         {
           status: newStatus,
         },

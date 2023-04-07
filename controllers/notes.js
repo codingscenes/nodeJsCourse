@@ -1,4 +1,4 @@
-const Notes = require('../models/notes');
+const Notes = require('../models/note');
 
 exports.getIndex = (req, res, next) => {
   Notes.findAll({

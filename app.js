@@ -9,8 +9,9 @@ const app = express();
 
 const notesRoutes = require('./routes/notes');
 const adminRoutes = require('./routes/admin');
-const Notes = require('./models/notes');
-const Users = require('./models/users');
+
+const Note = require('./models/note');
+const User = require('./models/user');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -29,9 +30,9 @@ app.use('/', (req, res, next) => {
 });
 
 // magic association method
-Users.hasMany(Notes);
+User.hasMany(Note);
 
-Notes.belongsTo(Users, {
+Note.belongsTo(User, {
   constraints: true,
   onDelete: 'CASCADE',
 });
@@ -39,9 +40,22 @@ Notes.belongsTo(Users, {
 // recommended use sequelize migration (production env)
 // data base migration
 sequelize
-  .sync({ force: true })
+  .sync()
   .then((result) => {
     console.log('Sync Success!');
+    return User.findByPk(2);
+  })
+  .then((user) => {
+    if (!user) {
+      return User.create({
+        name: 'Mohit Sharma',
+        email: 'abc@gmail.com',
+        password: '123456',
+      });
+    }
+  })
+  .then((user) => {
+    console.log('user created', user);
   })
   .catch((err) => console.log(err));
 
