@@ -1,7 +1,7 @@
-const Notes = require('../models/note');
+const Note = require('../models/note');
 
 exports.getIndex = (req, res, next) => {
-  Notes.findAll({
+  Note.findAll({
     where: {
       status: 'Approved',
     },
@@ -31,12 +31,16 @@ exports.getAddNote = (req, res, next) => {
 exports.postNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl } = reqBody;
-  Notes.create({
-    title: title,
-    description: description,
-    imageUrl: imageUrl,
-    status: 'Unapproved',
-  })
+  const user = req.user;
+  console.dir('user', user);
+  // magic methods
+  user
+    .createNote({
+      title: title,
+      description: description,
+      imageUrl: imageUrl,
+      status: 'Unapproved',
+    })
     .then((result) => {
       console.log('Record Inserted');
       res.redirect('/');
@@ -48,7 +52,7 @@ exports.postNote = (req, res, next) => {
 
 exports.getNoteDetails = (req, res, next) => {
   const noteId = req.params.noteId;
-  Notes.findOne({
+  Note.findOne({
     where: {
       id: noteId,
     },
@@ -65,7 +69,7 @@ exports.getNoteDetails = (req, res, next) => {
       console.log(err);
     });
   // find only using Primary key
-  // Notes.findByPk(noteId, { raw: true })
+  // Note.findByPk(noteId, { raw: true })
   //   .then((result) => {
   //     res.render('notes/note', {
   //       pageTitle: 'View Note Details',
@@ -81,7 +85,7 @@ exports.getNoteDetails = (req, res, next) => {
 exports.getEditNoteDetails = (req, res, next) => {
   const noteId = req.params.noteId;
   const isEdit = req.query.isEditing;
-  Notes.findOne({
+  Note.findOne({
     where: {
       id: noteId,
     },
@@ -103,7 +107,7 @@ exports.getEditNoteDetails = (req, res, next) => {
 exports.saveEditNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl, noteId } = reqBody;
-  Notes.update(
+  Note.update(
     {
       title: title,
       description: description,
@@ -125,7 +129,7 @@ exports.saveEditNote = (req, res, next) => {
 
 exports.deleteNote = (req, res, next) => {
   const noteId = req.body.noteId;
-  Notes.destroy({
+  Note.destroy({
     where: {
       id: noteId,
     },
