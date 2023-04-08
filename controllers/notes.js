@@ -1,5 +1,4 @@
 const Note = require('../models/note');
-const Tag = require('../models/tag');
 
 exports.getIndex = (req, res, next) => {
   const user = req.user;
@@ -9,10 +8,7 @@ exports.getIndex = (req, res, next) => {
       where: {
         status: 'Approved',
       },
-      include: {
-        model: Tag,
-        as: 'Tags',
-      },
+      raw: true,
     })
     .then((result) => {
       res.render('notes/index', {
@@ -45,23 +41,20 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getAddNote = (req, res, next) => {
-  Tag.findAll({ raw: true }).then((tags) => {
-    res.render('notes/add-note', {
-      pageTitle: 'Add a note',
-      path: '/add-note',
-      isEditMode: '',
-      tags: tags,
-      selectedTags: [],
-    });
+  res.render('notes/add-note', {
+    pageTitle: 'Add a note',
+    path: '/add-note',
+    isEditMode: '',
+    tags: [],
   });
 };
 
 exports.postNote = (req, res, next) => {
   const reqBody = req.body;
-  const { title, description, imageUrl, tagIds } = reqBody;
+  const { title, description, imageUrl } = reqBody;
   const user = req.user;
+  console.dir('user', user);
   // magic methods
-  console.log(tagIds);
   user
     .createNote({
       title: title,
@@ -69,20 +62,9 @@ exports.postNote = (req, res, next) => {
       imageUrl: imageUrl,
       status: 'Unapproved',
     })
-    .then((note) => {
-      if (tagIds && tagIds.length > 0) {
-        Tag.findAll({
-          where: {
-            id: tagIds,
-          },
-        }).then((tags) => {
-          note.addTags(tags).then(() => {
-            res.redirect('/');
-          });
-        });
-      } else {
-        res.redirect('/');
-      }
+    .then((result) => {
+      console.log('Record Inserted');
+      res.redirect('/');
     })
     .catch((err) => {
       console.log('Failed: Record Inserted');
@@ -95,10 +77,7 @@ exports.getNoteDetails = (req, res, next) => {
     where: {
       id: noteId,
     },
-    include: {
-      model: Tag,
-      as: 'Tags',
-    },
+    raw: true,
   })
     .then((result) => {
       res.render('notes/note', {
@@ -131,32 +110,25 @@ exports.getEditNoteDetails = (req, res, next) => {
     where: {
       id: noteId,
     },
-    include: {
-      model: Tag,
-      as: 'Tags',
-    },
+    raw: true,
   })
-    .then((_note) => {
-      console.log(_note);
-      Tag.findAll({ raw: true }).then((tags) => {
-        res.render('notes/add-note', {
-          pageTitle: 'Editing a note',
-          path: '',
-          note: _note,
-          isEditMode: isEdit,
-          tags: tags,
-          selectedTags: _note.Tags.map((tag) => tag.id),
-        });
+    .then((result) => {
+      res.render('notes/add-note', {
+        pageTitle: 'Editing a note',
+        path: '',
+        note: result,
+        isEditMode: isEdit,
+        tags: [],
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.log(er);
     });
 };
 
 exports.saveEditNote = (req, res, next) => {
   const reqBody = req.body;
-  const { title, description, imageUrl, noteId, tagIds } = reqBody;
+  const { title, description, imageUrl, noteId } = reqBody;
   Note.update(
     {
       title: title,
@@ -169,28 +141,8 @@ exports.saveEditNote = (req, res, next) => {
       },
     }
   )
-    .then(() => {
-      return Note.findByPk(noteId, {
-        include: {
-          model: Tag,
-          as: 'Tags',
-        },
-      });
-    })
-    .then((note) => {
-      if (tagIds && tagIds.length > 0) {
-        Tag.findAll({
-          where: {
-            id: tagIds,
-          },
-        }).then((tags) => {
-          note.setTags(tags).then(() => {
-            res.redirect(`/note/${noteId}`);
-          });
-        });
-      } else {
-        res.redirect(`/note/${noteId}`);
-      }
+    .then((result) => {
+      res.redirect(`/note/${noteId}`);
     })
     .catch((err) => {
       console.log(err);
