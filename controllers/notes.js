@@ -1,14 +1,16 @@
 const Note = require('../models/note');
 
 exports.getIndex = (req, res, next) => {
-  Note.findAll({
-    where: {
-      status: 'Approved',
-    },
-    raw: true,
-  })
+  const user = req.user;
+
+  user
+    .getNotes({
+      where: {
+        status: 'Approved',
+      },
+      raw: true,
+    })
     .then((result) => {
-      // console.log(result);
       res.render('notes/index', {
         pageTitle: 'Notes',
         path: '/',
@@ -18,6 +20,24 @@ exports.getIndex = (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+
+  // Note.findAll({
+  //   where: {
+  //     status: 'Approved',
+  //   },
+  //   raw: true,
+  // })
+  //   .then((result) => {
+  //     // console.log(result);
+  //     res.render('notes/index', {
+  //       pageTitle: 'Notes',
+  //       path: '/',
+  //       notes: result,
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 };
 
 exports.getAddNote = (req, res, next) => {

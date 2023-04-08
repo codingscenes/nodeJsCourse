@@ -20,8 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  console.log('running middleware!');
-  User.findByPk(1).then((user) => {
+  User.findByPk(2).then((user) => {
     req.user = user;
     next();
   });
