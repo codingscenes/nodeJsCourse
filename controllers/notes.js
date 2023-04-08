@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+
 const Note = require('../models/note');
 const Tag = require('../models/tag');
 
@@ -15,10 +17,13 @@ exports.getIndex = (req, res, next) => {
       },
     })
     .then((result) => {
-      res.render('notes/index', {
-        pageTitle: 'Notes',
-        path: '/',
-        notes: result,
+      Tag.findAll({ raw: true }).then((tags) => {
+        res.render('notes/index', {
+          pageTitle: 'Notes',
+          path: '/',
+          notes: result,
+          tags: tags,
+        });
       });
     })
     .catch((err) => {
@@ -206,6 +211,45 @@ exports.deleteNote = (req, res, next) => {
   })
     .then((result) => {
       res.redirect('/');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.filterNotes = (req, res, next) => {
+  const user = req.user;
+  const tagIds = req.body.tagIds;
+  /** alternate
+   * user.getNotes({
+    where: {
+      status: 'Approved',
+      userId: user.id,
+    },
+   */
+  user
+    .getNotes({
+      where: {
+        status: 'Approved',
+      },
+      include: {
+        model: Tag,
+        as: 'Tags',
+        where: {
+          id: tagIds,
+        },
+        as: 'Tags',
+      },
+    })
+    .then((result) => {
+      Tag.findAll({ raw: true }).then((tags) => {
+        res.render('notes/index', {
+          pageTitle: 'Notes',
+          path: '/',
+          notes: result,
+          tags: tags,
+        });
+      });
     })
     .catch((err) => {
       console.log(err);

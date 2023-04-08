@@ -66,3 +66,15 @@ body {
   font-weight: bold;
   font-size: 16px;
 }
+
+form.filter {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter .form-group {
+  width: 80%;
+}
