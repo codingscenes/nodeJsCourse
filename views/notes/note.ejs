@@ -14,6 +14,13 @@
       >
       <div class="media-body">
         <h1 class="media-heading"><%= note.title %></h1>
+        <% if (note.Tags) { %>
+        <hr />
+        <% note.Tags.forEach(function(tag) { %>
+        <span class="tags"><%= tag.name %></span>
+        <% }); %>
+        <hr />
+        <% } %>
         <p><%= note.description %></p>
         <img
           class="media-object"

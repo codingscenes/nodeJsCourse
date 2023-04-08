@@ -33,6 +33,18 @@
             value="<%= isEditMode ? note.imageUrl : ''   %>"
           />
         </div>
+        <% if (tags && tags.length) { %>
+        <div class="form-group">
+          <label for="tags">Tags:</label>
+          <select class="form-control" id="tags" name="tagIds" multiple>
+            <% tags.forEach(function(tag) { %>
+            <option value="<%= tag.id %>"
+              <% if (selectedTags.includes(tag.id)) { %>selected<% } %>
+              ><%= tag.name %></option>
+            <% }); %>
+          </select>
+        </div>
+        <% } %>
         <% if (isEditMode) { %>
         <input type="hidden" name="noteId" value="<%= note.id %>" />
         <% } %>

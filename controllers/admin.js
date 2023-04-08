@@ -1,7 +1,13 @@
 const Note = require('../models/note');
+const Tag = require('../models/tag');
 
 exports.getManageNotes = (req, res, next) => {
-  Note.findAll({ raw: true })
+  Note.findAll({
+    include: {
+      model: Tag,
+      as: 'Tags',
+    },
+  })
     .then((result) => {
       res.render('admin/index', {
         pageTitle: 'Manage notes',

@@ -57,3 +57,12 @@ body {
 .float-right {
   float: right;
 }
+
+.tags {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 10px;
+  color: #535353;
+  font-weight: bold;
+  font-size: 16px;
+}
