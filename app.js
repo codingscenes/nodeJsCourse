@@ -12,6 +12,7 @@ const adminRoutes = require('./routes/admin');
 
 const Note = require('./models/note');
 const User = require('./models/user');
+const Tag = require('./models/tag');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -44,6 +45,10 @@ Note.belongsTo(User, {
   onDelete: 'CASCADE',
 });
 
+// Define many-to-many association between Note and Tag
+Note.belongsToMany(Tag, { through: 'NoteTags' });
+Tag.belongsToMany(Note, { through: 'NoteTags' });
+
 // recommended use sequelize migration (production env)
 // data base migration
 sequelize
@@ -63,6 +68,29 @@ sequelize
   })
   .then((user) => {
     console.log('user created', user);
+    return Tag.findAll();
+  })
+  .then((tags) => {
+    if (!tags || !tags.length) {
+      const tags = [
+        'programming',
+        'web development',
+        'database',
+        'networking',
+        'algorithm',
+        'Computer',
+      ];
+
+      tags.forEach((tagName) => {
+        Tag.create({ name: tagName })
+          .then((res) => {
+            console.log('Tag Created!');
+          })
+          .catch((err) => {
+            console.log('Failed to create a tag!');
+          });
+      });
+    }
   })
   .catch((err) => console.log(err));
 
