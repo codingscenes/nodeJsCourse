@@ -9,14 +9,19 @@ exports.getIndex = (req, res, next) => {
       where: {
         status: 'Approved',
       },
-      raw: true,
+      include: {
+        model: Tag,
+        as: 'Tags',
+      },
     })
-    .then((result) => {
-      res.render('notes/index', {
-        pageTitle: 'Notes',
-        path: '/',
-        notes: result,
-        tags: [],
+    .then((_notes) => {
+      Tag.findAll({ raw: true }).then((tags) => {
+        res.render('notes/index', {
+          pageTitle: 'Notes',
+          path: '/',
+          notes: _notes,
+          tags: tags,
+        });
       });
     })
     .catch((err) => {
@@ -40,6 +45,37 @@ exports.getIndex = (req, res, next) => {
   //   .catch((err) => {
   //     console.log(err);
   //   });
+};
+
+exports.postIndex = (req, res, next) => {
+  const user = req.user;
+  const tagIds = req.body.tagIds;
+  user
+    .getNotes({
+      where: {
+        status: 'Approved',
+      },
+      include: {
+        model: Tag,
+        as: 'Tags',
+        where: {
+          id: tagIds,
+        },
+      },
+    })
+    .then((_notes) => {
+      Tag.findAll({ raw: true }).then((tags) => {
+        res.render('notes/index', {
+          pageTitle: 'Notes',
+          path: '/',
+          notes: _notes,
+          tags: tags,
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.getAddNote = (req, res, next) => {
@@ -97,13 +133,17 @@ exports.getNoteDetails = (req, res, next) => {
     where: {
       id: noteId,
     },
-    raw: true,
+    include: {
+      model: Tag,
+      as: 'Tags',
+    },
   })
-    .then((result) => {
+    .then((_note) => {
+      // Tags => _note.Tags
       res.render('notes/note', {
         pageTitle: 'View Note Details',
         path: '',
-        note: result,
+        note: _note,
       });
     })
     .catch((err) => {

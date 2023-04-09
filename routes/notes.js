@@ -6,6 +6,8 @@ const notesController = require('../controllers/notes');
 
 router.get('/', notesController.getIndex);
 
+router.post('/', notesController.postIndex);
+
 router.get('/add-note', notesController.getAddNote);
 
 router.post('/add-note', notesController.postNote);
