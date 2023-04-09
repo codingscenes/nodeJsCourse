@@ -47,6 +47,7 @@ exports.getAddNote = (req, res, next) => {
     path: '/add-note',
     isEditMode: '',
     tags: [],
+    selectedTags: [],
   });
 };
 

@@ -39,8 +39,9 @@
           <select class="form-control" id="tags" name="tagIds" multiple>
             <% tags.forEach(function(tag) { %>
             <option value="<%= tag.id %>"
-              <% if (selectedTags.includes(tag.id)) { %>selected<% } %>
-              ><%= tag.name %></option>
+              <% if (selectedTags.includes(tag.id)) { %>selected<% } %> >
+              <%= tag.name %>
+            </option>
             <% }); %>
           </select>
         </div>
