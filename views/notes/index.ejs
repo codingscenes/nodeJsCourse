@@ -4,7 +4,19 @@
 
 <main>
   <div class="container">
-    <% if (notes.length > 0) { %>
+    <% if (tags && tags.length) { %>
+    <form action="/filter-notes" method="post" class="filter">
+      <div class="form-group">
+        <label for="tags">Tags:</label>
+        <select class="form-control" id="tags" name="tagIds" multiple>
+          <% tags.forEach(function(tag) { %>
+          <option value="<%= tag.id %>"><%= tag.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <button class="btn">Filter</button>
+    </form>
+    <% } %> <% if (notes.length > 0) { %>
     <h1>List of notes!</h1>
     <% for (let note of notes) { %>
     <div class="media">

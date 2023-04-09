@@ -15,6 +15,7 @@ exports.getIndex = (req, res, next) => {
         pageTitle: 'Notes',
         path: '/',
         notes: result,
+        tags: [],
       });
     })
     .catch((err) => {
@@ -162,4 +163,15 @@ exports.deleteNote = (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+exports.filterNotes = (req, res, next) => {
+  const user = req.user;
+  const tagIds = req.body.tagIds;
+  res.render('notes/index', {
+    pageTitle: 'Notes',
+    path: '/',
+    notes: [],
+    tags: [],
+  });
 };

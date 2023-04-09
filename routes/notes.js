@@ -19,4 +19,6 @@ router.post('/edit-note', notesController.saveEditNote);
 
 router.post('/delete-note', notesController.deleteNote);
 
+router.post('/filter-notes', notesController.filterNotes);
+
 module.exports = router;
