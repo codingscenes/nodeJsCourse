@@ -1,5 +1,3 @@
-const { Op } = require('sequelize');
-
 const Note = require('../models/note');
 const Tag = require('../models/tag');
 
