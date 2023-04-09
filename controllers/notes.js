@@ -1,4 +1,5 @@
 const Note = require('../models/note');
+const Tag = require('../models/tag');
 
 exports.getIndex = (req, res, next) => {
   const user = req.user;
@@ -42,21 +43,25 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getAddNote = (req, res, next) => {
-  res.render('notes/add-note', {
-    pageTitle: 'Add a note',
-    path: '/add-note',
-    isEditMode: '',
-    tags: [],
-    selectedTags: [],
-  });
+  Tag.findAll()
+    .then((tags) => {
+      res.render('notes/add-note', {
+        pageTitle: 'Add a note',
+        path: '/add-note',
+        isEditMode: '',
+        tags: tags,
+        selectedTags: [],
+      });
+    })
+    .catch((err) => {
+      console.log('err in fetching tag', err);
+    });
 };
 
 exports.postNote = (req, res, next) => {
   const reqBody = req.body;
-  const { title, description, imageUrl } = reqBody;
+  const { title, description, imageUrl, tagIds } = reqBody;
   const user = req.user;
-  console.dir('user', user);
-  // magic methods
   user
     .createNote({
       title: title,
@@ -64,9 +69,22 @@ exports.postNote = (req, res, next) => {
       imageUrl: imageUrl,
       status: 'Unapproved',
     })
-    .then((result) => {
+    .then((_note) => {
       console.log('Record Inserted');
-      res.redirect('/');
+      if (tagIds && tagIds.length > 0) {
+        Tag.findAll({
+          where: {
+            id: tagIds,
+          },
+        }).then((tags) => {
+          _note.addTags(tags).then(() => {
+            console.log('Tags added to the Note');
+            res.redirect('/');
+          });
+        });
+      } else {
+        res.redirect('/');
+      }
     })
     .catch((err) => {
       console.log('Failed: Record Inserted');
