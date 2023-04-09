@@ -130,15 +130,21 @@ exports.getEditNoteDetails = (req, res, next) => {
     where: {
       id: noteId,
     },
-    raw: true,
+    include: {
+      model: Tag,
+      as: 'Tags',
+    },
   })
-    .then((result) => {
-      res.render('notes/add-note', {
-        pageTitle: 'Editing a note',
-        path: '',
-        note: result,
-        isEditMode: isEdit,
-        tags: [],
+    .then((_note) => {
+      Tag.findAll().then((tags) => {
+        res.render('notes/add-note', {
+          pageTitle: 'Editing a note',
+          path: '',
+          note: _note,
+          isEditMode: isEdit,
+          tags: tags,
+          selectedTags: _note.Tags.map((tag) => tag.id),
+        });
       });
     })
     .catch((err) => {
@@ -148,7 +154,7 @@ exports.getEditNoteDetails = (req, res, next) => {
 
 exports.saveEditNote = (req, res, next) => {
   const reqBody = req.body;
-  const { title, description, imageUrl, noteId } = reqBody;
+  const { title, description, imageUrl, noteId, tagIds } = reqBody;
   Note.update(
     {
       title: title,
@@ -162,7 +168,28 @@ exports.saveEditNote = (req, res, next) => {
     }
   )
     .then((result) => {
-      res.redirect(`/note/${noteId}`);
+      Note.findByPk(noteId, {
+        include: {
+          model: Tag,
+          as: 'Tags',
+        },
+      }).then((_note) => {
+        if (tagIds && tagIds.length > 0) {
+          Tag.findAll({
+            where: {
+              id: tagIds,
+            },
+          })
+            .then((tags) => {
+              return _note.setTags(tags);
+            })
+            .then(() => {
+              res.redirect(`/note/${noteId}`);
+            });
+        } else {
+          res.redirect(`/note/${noteId}`);
+        }
+      });
     })
     .catch((err) => {
       console.log(err);
