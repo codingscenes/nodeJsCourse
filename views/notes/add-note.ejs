@@ -34,7 +34,7 @@
           />
         </div>
         <% if (isEditMode) { %>
-         <input type="hidden" name="noteId" value="<%= note.noteId %>" />
+         <input type="hidden" name="noteId" value="<%= note._id %>" />
         <% } %>
         <button class="btn" type="submit">
           <%= isEditMode ? 'Save changes' : 'Add' %>

@@ -19,16 +19,16 @@
         <h1 class="media-heading"><%= note.title %></h1>
         <p><%= note.description %></p>
         <div class="actions">
-          <a href="/note/<%= note.noteId %>" role="button" class="btn"> View</a>
+          <a href="/note/<%= note._id %>" role="button" class="btn"> View</a>
           <a
-            href="/add-note/<%= note.noteId %>?isEditing=true"
+            href="/add-note/<%= note._id %>?isEditing=true"
             role="button"
             class="btn"
           >
             Edit</a
           >
           <form action="/delete-note" method="POST">
-            <input type="hidden" name="noteId" value="<%= note.noteId %>" />
+            <input type="hidden" name="noteId" value="<%= note._id %>" />
             <button class="btn">Delete</button>
           </form>
         </div>

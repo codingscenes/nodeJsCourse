@@ -1,10 +1,10 @@
-const Notes = require('../models/notes');
+const Note = require("../models/note");
 
 exports.getManageNotes = (req, res, next) => {
-  Notes.fetchAll((_notes) => {
-    res.render('admin/index', {
-      pageTitle: 'Manage notes',
-      path: '/manage-notes',
+  Note.fetchAll((_notes) => {
+    res.render("admin/index", {
+      pageTitle: "Manage notes",
+      path: "/manage-notes",
       notes: _notes,
     });
   }, true);
@@ -12,6 +12,6 @@ exports.getManageNotes = (req, res, next) => {
 
 exports.approveNote = (req, res, next) => {
   const noteId = req.body.noteId;
-  Notes.approve(noteId);
-  res.redirect('/admin/manage-notes');
+  Note.approve(noteId);
+  res.redirect("/admin/manage-notes");
 };
