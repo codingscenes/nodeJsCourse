@@ -3,9 +3,11 @@ const bodyParser = require('body-parser');
 
 const path = require('path');
 
+const mongoConnect = require('./connection/db');
+
 const app = express();
 
-const noteRoutes = require('./routes/note');
+const noteController = require('./routes/note');
 const adminRoutes = require('./routes/admin');
 
 app.set('view engine', 'ejs');
@@ -14,7 +16,7 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(noteRoutes);
+app.use(noteController);
 app.use('/admin', adminRoutes);
 
 app.use('/', (req, res, next) => {
@@ -24,4 +26,6 @@ app.use('/', (req, res, next) => {
   });
 });
 
-app.listen(3000);
+mongoConnect(() => {
+  app.listen(3000);
+});
