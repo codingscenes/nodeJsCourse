@@ -16,7 +16,7 @@ const getDataFromFile = (callbackFn) => {
   });
 };
 
-module.exports = class Notes {
+module.exports = class Note {
   constructor(_noteId, _title, _description, _imageUrl) {
     this.noteId = _noteId;
     this.title = _title;
