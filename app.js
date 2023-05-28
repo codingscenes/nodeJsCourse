@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const path = require('path');
 
-const mongoConnect = require('./connection/db');
+const mongoConnect = require('./connection/db').mongoConnect;
 
 const app = express();
 

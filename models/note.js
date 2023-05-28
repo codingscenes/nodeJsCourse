@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const getDb = require('../connection/db').getDb;
+
 const pathToFile = path.join(
   path.dirname(require.main.filename),
   'data',
@@ -18,7 +20,7 @@ const getDataFromFile = (callbackFn) => {
 
 module.exports = class Note {
   constructor(_noteId, _title, _description, _imageUrl) {
-    this.noteId = _noteId;
+    this._id = _noteId;
     this.title = _title;
     this.description = _description;
     this.imageUrl = _imageUrl;
@@ -26,15 +28,9 @@ module.exports = class Note {
   }
 
   save() {
-    getDataFromFile((notes) => {
-      this.noteId = Math.floor(Math.random() * 1000).toString();
-      notes.push(this);
-      fs.writeFile(pathToFile, JSON.stringify(notes), (err) => {
-        if (err) {
-          console.log('error in saving file', err);
-        }
-      });
-    });
+    console.log(this);
+    const db = getDb();
+    return db.collection('notes').insertOne(this);
   }
 
   saveChanges() {

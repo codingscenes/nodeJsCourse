@@ -22,8 +22,15 @@ exports.postNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl } = reqBody;
   const note = new Note(null, title, description, imageUrl);
-  note.save();
-  res.redirect('/');
+  note
+    .save()
+    .then((result) => {
+      console.log(result);
+      res.redirect('/');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.getNoteDetails = (req, res, next) => {
