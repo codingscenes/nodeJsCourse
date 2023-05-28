@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 
 const path = require('path');
 
+const mongoConnect = require('./connection/db');
+
 const app = express();
 
 const notesRoutes = require('./routes/notes');
@@ -24,4 +26,6 @@ app.use('/', (req, res, next) => {
   });
 });
 
-app.listen(3000);
+mongoConnect(() => {
+  app.listen(3000);
+});
