@@ -1,13 +1,16 @@
 const Note = require('../models/note');
 
 exports.getIndex = (req, res, next) => {
-  Note.fetchAll((_notes) => {
+  Note.fetchAll().then(_notes => {
     res.render('notes/index', {
       pageTitle: 'Notes',
       path: '/',
       notes: _notes,
     });
-  }, false);
+  }).catch(err => {
+    console.log('error', err)
+  })
+
 };
 
 exports.getAddNote = (req, res, next) => {

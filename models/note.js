@@ -28,7 +28,6 @@ module.exports = class Note {
   }
 
   save() {
-    console.log(this);
     const db = getDb();
     return db.collection('notes').insertOne(this);
   }
@@ -47,13 +46,8 @@ module.exports = class Note {
   }
 
   static fetchAll(callbackFn, isAdmin) {
-    getDataFromFile((notes) => {
-      if (isAdmin) {
-        return callbackFn(notes);
-      }
-      const approvedNotes = notes.filter((n) => n.status === 'approved');
-      callbackFn(approvedNotes);
-    });
+    const db = getDb();
+    return db.collection('notes').find().toArray();
   }
 
   static findNoteById(noteId, callbackFn) {
