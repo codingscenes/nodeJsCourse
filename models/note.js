@@ -1,4 +1,5 @@
 const getDb = require('../connection/db').getDb;
+const mongodb = require('mongodb');
 
 module.exports = class Note {
   constructor(_noteId, _title, _description, _imageUrl) {
@@ -14,24 +15,25 @@ module.exports = class Note {
     return db.collection('notes').insertOne(this);
   }
 
-  saveChanges() {
+  saveChanges() {}
 
-  }
-
-  static fetchAll(callbackFn, isAdmin) {
+  static fetchAll(isAdmin) {
     const db = getDb();
-    return db.collection('notes').find().toArray();
+    if (isAdmin) {
+      return db.collection('notes').find().toArray();
+    }
+    return db.collection('notes').find({ status: 'approved' }).toArray();
   }
 
   static findNoteById(noteId, callbackFn) {
-
+    const db = getDb();
+    return db
+      .collection('notes')
+      .find({ _id: new mongodb.ObjectId(noteId) })
+      .next();
   }
 
-  static delete(noteId) {
+  static delete(noteId) {}
 
-  }
-
-  static approve(noteId) {
-
-  }
+  static approve(noteId) {}
 };

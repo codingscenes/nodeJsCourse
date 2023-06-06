@@ -1,16 +1,17 @@
 const Note = require('../models/note');
 
 exports.getIndex = (req, res, next) => {
-  Note.fetchAll().then(_notes => {
-    res.render('notes/index', {
-      pageTitle: 'Notes',
-      path: '/',
-      notes: _notes,
+  Note.fetchAll(false)
+    .then((_notes) => {
+      res.render('notes/index', {
+        pageTitle: 'Notes',
+        path: '/',
+        notes: _notes,
+      });
+    })
+    .catch((err) => {
+      console.log('error', err);
     });
-  }).catch(err => {
-    console.log('error', err)
-  })
-
 };
 
 exports.getAddNote = (req, res, next) => {
@@ -38,13 +39,18 @@ exports.postNote = (req, res, next) => {
 
 exports.getNoteDetails = (req, res, next) => {
   const noteId = req.params.noteId;
-  Note.findNoteById(noteId, (_note) => {
-    res.render('notes/note', {
-      pageTitle: 'View Note Details',
-      path: '',
-      note: _note,
+  Note.findNoteById(noteId)
+    .then((_note) => {
+      console.log('single', _note);
+      res.render('notes/note', {
+        pageTitle: 'View Note Details',
+        path: '',
+        note: _note,
+      });
+    })
+    .catch((err) => {
+      console.log('error', err);
     });
-  });
 };
 
 exports.getEditNoteDetails = (req, res, next) => {
