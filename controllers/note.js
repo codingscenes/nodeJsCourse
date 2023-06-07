@@ -25,7 +25,7 @@ exports.getAddNote = (req, res, next) => {
 exports.postNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl } = reqBody;
-  const note = new Note(null, title, description, imageUrl);
+  const note = new Note(title, description, imageUrl);
   note
     .save()
     .then((result) => {
@@ -56,23 +56,30 @@ exports.getNoteDetails = (req, res, next) => {
 exports.getEditNoteDetails = (req, res, next) => {
   const noteId = req.params.noteId;
   const isEdit = req.query.isEditing;
-  Note.findNoteById(noteId, (_note) => {
-    res.render('notes/add-note', {
-      pageTitle: 'Editing a note',
-      path: '',
-      note: _note,
-      isEditMode: isEdit,
-    });
-  });
+
+  Note.findNoteById(noteId)
+    .then((_note) => {
+      res.render('notes/add-note', {
+        pageTitle: 'Editing a note',
+        path: '',
+        note: _note,
+        isEditMode: isEdit,
+      });
+    })
+    .catch((err) => console.log('error', err));
 };
 
 exports.saveEditNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl, noteId } = reqBody;
 
-  const note = new Note(noteId, title, description, imageUrl);
-  note.saveChanges();
-  res.redirect(`/note/${noteId}`);
+  const note = new Note(title, description, imageUrl, noteId);
+  note
+    .save()
+    .then(() => {
+      res.redirect(`/note/${noteId}`);
+    })
+    .catch((err) => console.log('error', err));
 };
 
 exports.deleteNote = (req, res, next) => {
