@@ -84,6 +84,11 @@ exports.saveEditNote = (req, res, next) => {
 
 exports.deleteNote = (req, res, next) => {
   const noteId = req.body.noteId;
-  Note.delete(noteId);
-  res.redirect('/');
+  Note.delete(noteId)
+    .then(() => {
+      res.redirect('/');
+    })
+    .catch((err) => {
+      console.log('error', err);
+    });
 };

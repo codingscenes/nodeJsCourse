@@ -59,7 +59,12 @@ module.exports = class Note {
       .next();
   }
 
-  static delete(noteId) {}
+  static delete(noteId) {
+    const db = getDb();
+    return db
+      .collection('notes')
+      .deleteOne({ _id: new mongodb.ObjectId(noteId) });
+  }
 
   static approve(noteId) {}
 };
