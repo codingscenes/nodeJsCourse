@@ -66,5 +66,29 @@ module.exports = class Note {
       .deleteOne({ _id: new mongodb.ObjectId(noteId) });
   }
 
-  static approve(noteId) {}
+  static approve(noteId) {
+    const db = getDb();
+    let status = 'unapproved';
+
+    return Note.findNoteById(noteId)
+      .then((_note) => {
+        if (_note.status === 'unapproved') {
+          status = 'approved';
+        }
+      })
+      .then(() => {
+        return db
+          .collection('notes')
+          .updateOne(
+            { _id: new mongodb.ObjectId(noteId) },
+            {
+              $set: {
+                status: status,
+              },
+            }
+          )
+          .next();
+      })
+      .catch((err) => console.log('error', err));
+  }
 };
