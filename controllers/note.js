@@ -1,7 +1,7 @@
 const Note = require('../models/note');
 
 exports.getIndex = (req, res, next) => {
-  Note.fetchAll(false)
+  Note.fetchAll(false, req.user._id)
     .then((_notes) => {
       res.render('notes/index', {
         pageTitle: 'Notes',
@@ -25,7 +25,7 @@ exports.getAddNote = (req, res, next) => {
 exports.postNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl } = reqBody;
-  const note = new Note(title, description, imageUrl);
+  const note = new Note(title, description, imageUrl, null, req.user._id);
   note
     .save()
     .then((result) => {
@@ -73,7 +73,7 @@ exports.saveEditNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl, noteId } = reqBody;
 
-  const note = new Note(title, description, imageUrl, noteId);
+  const note = new Note(title, description, imageUrl, noteId, req.user);
   note
     .save()
     .then(() => {
