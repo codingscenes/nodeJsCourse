@@ -1,8 +1,9 @@
 const Note = require('../models/note');
 
 exports.getIndex = (req, res, next) => {
-  Note.fetchAll(false, req.user._id)
+  Note.find()
     .then((_notes) => {
+      console.log('_notes', _notes);
       res.render('notes/index', {
         pageTitle: 'Notes',
         path: '/',
@@ -25,7 +26,12 @@ exports.getAddNote = (req, res, next) => {
 exports.postNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl } = reqBody;
-  const note = new Note(title, description, imageUrl, null, req.user._id);
+  const note = new Note({
+    title: title,
+    description: description,
+    imageUrl: imageUrl,
+    status: 'unapproved',
+  });
   note
     .save()
     .then((result) => {
@@ -39,7 +45,7 @@ exports.postNote = (req, res, next) => {
 
 exports.getNoteDetails = (req, res, next) => {
   const noteId = req.params.noteId;
-  Note.findNoteById(noteId)
+  Note.findById(noteId)
     .then((_note) => {
       console.log('single', _note);
       res.render('notes/note', {
@@ -57,7 +63,7 @@ exports.getEditNoteDetails = (req, res, next) => {
   const noteId = req.params.noteId;
   const isEdit = req.query.isEditing;
 
-  Note.findNoteById(noteId)
+  Note.findById(noteId)
     .then((_note) => {
       res.render('notes/add-note', {
         pageTitle: 'Editing a note',
@@ -72,6 +78,8 @@ exports.getEditNoteDetails = (req, res, next) => {
 exports.saveEditNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl, noteId } = reqBody;
+
+  Note.findById(noteId).then()
 
   const note = new Note(title, description, imageUrl, noteId, req.user._id);
   note

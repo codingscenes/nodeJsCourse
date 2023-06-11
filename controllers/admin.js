@@ -1,7 +1,7 @@
 const Note = require('../models/note');
 
 exports.getManageNotes = (req, res, next) => {
-  Note.fetchAll(true)
+  Note.find()
     .then((_notes) => {
       res.render('admin/index', {
         pageTitle: 'Manage notes',

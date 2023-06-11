@@ -1,97 +1,122 @@
-const getDb = require('../connection/db').getDb;
-const mongodb = require('mongodb');
-const ObjectId = mongodb.ObjectId;
+const mongoose = require('mongoose');
 
-module.exports = class Note {
-  constructor(_title, _description, _imageUrl, _noteId, _userId) {
-    this._id = _noteId;
-    this.title = _title;
-    this.description = _description;
-    this.imageUrl = _imageUrl;
-    this.status = 'unapproved';
-    this.userId = new ObjectId(_userId);
-  }
+const Schema = mongoose.Schema;
 
-  save() {
-    const db = getDb();
-    if (this._id) {
-      return db.collection('notes').updateOne(
-        { _id: new ObjectId(this._id) },
-        {
-          $set: {
-            title: this.title,
-            description: this.description,
-            imageUrl: this.imageUrl,
-            status: this.status,
-          },
-        }
-      );
-    }
-    return db.collection('notes').insertOne(this);
-  }
+const noteSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+});
 
-  saveChanges() {
-    const db = getDb();
-    return db.collection('notes').updateOne(
-      { _id: new ObjectId(this._id) },
-      {
-        $set: {
-          title: this.title,
-          description: this.description,
-          imageUrl: this.imageUrl,
-          status: this.status,
-        },
-      }
-    );
-  }
+module.exports = mongoose.model('Note', noteSchema);
 
-  static fetchAll(isAdmin, userId) {
-    const db = getDb();
-    if (isAdmin) {
-      return db.collection('notes').find().toArray();
-    }
-    return db
-      .collection('notes')
-      .find({ userId: new ObjectId(userId), status: 'approved' })
-      .toArray();
-  }
+// const getDb = require('../connection/db').getDb;
+// const mongodb = require('mongodb');
+// const ObjectId = mongodb.ObjectId;
 
-  static findNoteById(noteId) {
-    const db = getDb();
-    return db
-      .collection('notes')
-      .find({ _id: new ObjectId(noteId) })
-      .next();
-  }
+// module.exports = class Note {
+//   constructor(_title, _description, _imageUrl, _noteId, _userId) {
+//     this._id = _noteId;
+//     this.title = _title;
+//     this.description = _description;
+//     this.imageUrl = _imageUrl;
+//     this.status = 'unapproved';
+//     this.userId = new ObjectId(_userId);
+//   }
 
-  static delete(noteId) {
-    const db = getDb();
-    return db.collection('notes').deleteOne({ _id: new ObjectId(noteId) });
-  }
+//   save() {
+//     const db = getDb();
+//     if (this._id) {
+//       return db.collection('notes').updateOne(
+//         { _id: new ObjectId(this._id) },
+//         {
+//           $set: {
+//             title: this.title,
+//             description: this.description,
+//             imageUrl: this.imageUrl,
+//             status: this.status,
+//           },
+//         }
+//       );
+//     }
+//     return db.collection('notes').insertOne(this);
+//   }
 
-  static approve(noteId) {
-    const db = getDb();
-    let status = 'unapproved';
+//   saveChanges() {
+//     const db = getDb();
+//     return db.collection('notes').updateOne(
+//       { _id: new ObjectId(this._id) },
+//       {
+//         $set: {
+//           title: this.title,
+//           description: this.description,
+//           imageUrl: this.imageUrl,
+//           status: this.status,
+//         },
+//       }
+//     );
+//   }
 
-    return Note.findNoteById(noteId)
-      .then((_note) => {
-        if (_note.status === 'unapproved') {
-          status = 'approved';
-        }
-      })
-      .then(() => {
-        return db
-          .collection('notes')
-          .updateOne(
-            { _id: new ObjectId(noteId) },
-            {
-              $set: {
-                status: status,
-              },
-            }
-          )
-          .next();
-      })
-      .catch((err) => console.log('error', err));
-  }
-};
+//   static fetchAll(isAdmin, userId) {
+//     const db = getDb();
+//     if (isAdmin) {
+//       return db.collection('notes').find().toArray();
+//     }
+//     return db
+//       .collection('notes')
+//       .find({ userId: new ObjectId(userId), status: 'approved' })
+//       .toArray();
+//   }
+
+//   static findNoteById(noteId) {
+//     const db = getDb();
+//     return db
+//       .collection('notes')
+//       .find({ _id: new ObjectId(noteId) })
+//       .next();
+//   }
+
+//   static delete(noteId) {
+//     const db = getDb();
+//     return db.collection('notes').deleteOne({ _id: new ObjectId(noteId) });
+//   }
+
+//   static approve(noteId) {
+//     const db = getDb();
+//     let status = 'unapproved';
+
+//     return Note.findNoteById(noteId)
+//       .then((_note) => {
+//         if (_note.status === 'unapproved') {
+//           status = 'approved';
+//         }
+//       })
+//       .then(() => {
+//         return db
+//           .collection('notes')
+//           .updateOne(
+//             { _id: new ObjectId(noteId) },
+//             {
+//               $set: {
+//                 status: status,
+//               },
+//             }
+//           )
+//           .next();
+//       })
+//       .catch((err) => console.log('error', err));
+//   }
+// };
