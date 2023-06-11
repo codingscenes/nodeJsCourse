@@ -79,11 +79,14 @@ exports.saveEditNote = (req, res, next) => {
   const reqBody = req.body;
   const { title, description, imageUrl, noteId } = reqBody;
 
-  Note.findById(noteId).then()
-
-  const note = new Note(title, description, imageUrl, noteId, req.user._id);
-  note
-    .save()
+  Note.findById(noteId)
+    .then((_note) => {
+      _note.title = title;
+      _note.description = description;
+      _note.imageUrl = imageUrl;
+      _note.status = 'unapproved';
+      return _note.save();
+    })
     .then(() => {
       res.redirect(`/note/${noteId}`);
     })
@@ -92,7 +95,7 @@ exports.saveEditNote = (req, res, next) => {
 
 exports.deleteNote = (req, res, next) => {
   const noteId = req.body.noteId;
-  Note.delete(noteId)
+  Note.findByIdAndRemove(noteId)
     .then(() => {
       res.redirect('/');
     })
