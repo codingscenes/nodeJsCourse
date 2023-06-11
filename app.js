@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 
 const path = require('path');
 
-
-// const User = require('./models/user');
+const User = require('./models/user');
 
 const app = express();
 
@@ -18,15 +17,14 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use((req, res, next) => {
-//   User.findById('64845da2a7f432c9e86255f0')
-//     .then((user) => {
-//       req.user = user;
-//       console.log(user);
-//       next();
-//     })
-//     .catch((err) => console.log('error', err));
-// });
+app.use((req, res, next) => {
+  User.findById('6485ddb727040311e33830f4')
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => console.log('error', err));
+});
 
 app.use(noteController);
 app.use('/admin', adminRoutes);
@@ -38,12 +36,21 @@ app.use('/', (req, res, next) => {
   });
 });
 
-
 mongoose
   .connect(
     'mongodb+srv://test2020:XM1ElzQcr9Ka9hPB@cluster0.cfo4b9s.mongodb.net/notestakingapp?retryWrites=true&w=majority'
   )
   .then(() => {
+    User.findOne().then((user) => {
+      if (!user) {
+        const user = new User({
+          name: 'Rohit',
+          email: 'xyz@abc.com',
+        });
+        user.save();
+      }
+    });
+
     console.log('Connected to Mongoose!');
     app.listen(3000);
   })

@@ -1,22 +1,16 @@
-const getDb = require('../connection/db').getDb;
-const mongodb = require('mongodb');
-const ObjectId = mongodb.ObjectId;
+const mongoose = require('mongoose');
 
-class User {
-  constructor(name, email) {
-    this.name = name;
-    this.email = email;
-  }
+const Schema = mongoose.Schema;
 
-  save() {
-    const db = getDb();
-    return db.collection('users').insertOne(this);
-  }
+const userSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+});
 
-  static findById(userId) {
-    const db = getDb();
-    return db.collection('users').findOne({ _id: new ObjectId(userId) });
-  }
-}
-
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

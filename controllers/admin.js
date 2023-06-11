@@ -16,7 +16,15 @@ exports.getManageNotes = (req, res, next) => {
 
 exports.approveNote = (req, res, next) => {
   const noteId = req.body.noteId;
-  Note.approve(noteId)
+  let status = 'unapproved';
+  Note.findById(noteId)
+    .then((_note) => {
+      if (_note.status === 'unapproved') {
+        status = 'approved';
+      }
+      _note.status = status;
+      return _note.save();
+    })
     .then(() => {
       res.redirect('/admin/manage-notes');
     })

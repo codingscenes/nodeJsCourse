@@ -1,9 +1,12 @@
 const Note = require('../models/note');
 
 exports.getIndex = (req, res, next) => {
-  Note.find()
+  Note.find({ userId: req.user._id, status: 'approved' })
+    // .select('title description')
+    // .populate('userId')
     .then((_notes) => {
-      console.log('_notes', _notes);
+      console.log(_notes);
+
       res.render('notes/index', {
         pageTitle: 'Notes',
         path: '/',
@@ -31,11 +34,11 @@ exports.postNote = (req, res, next) => {
     description: description,
     imageUrl: imageUrl,
     status: 'unapproved',
+    userId: req.user,
   });
   note
     .save()
     .then((result) => {
-      console.log(result);
       res.redirect('/');
     })
     .catch((err) => {
@@ -47,7 +50,6 @@ exports.getNoteDetails = (req, res, next) => {
   const noteId = req.params.noteId;
   Note.findById(noteId)
     .then((_note) => {
-      console.log('single', _note);
       res.render('notes/note', {
         pageTitle: 'View Note Details',
         path: '',
